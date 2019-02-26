@@ -1,0 +1,14 @@
+.page-wrapper {
+  height: 100%;
+  .center {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & > p {
+      font-size: 5rem;
+      color: red;
+    }
+  }
+
+}
