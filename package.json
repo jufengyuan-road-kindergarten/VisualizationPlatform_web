@@ -1,5 +1,5 @@
 {
-  "name": "coding_web",
+  "name": "VisualizationPlatform_web",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "talcode",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-runtime": "^6.26.0",
     "iview": "^3.1.5",
     "normalize.css": "^8.0.0",
     "vue": "^2.5.2",
