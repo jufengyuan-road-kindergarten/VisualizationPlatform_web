@@ -76,9 +76,15 @@
                   return `
 <p style="text-align:center;font-weight:bold;">${params.data.name}</p>
 <p>类型: ${map_type_name[params.data.type]}</p>
+${params.data.properties.duration ? `<p>字/号: ${params.data.properties.duration}</p>` : ''}
 ${params.data.properties.duration ? `<p>时期: ${params.data.properties.duration}</p>` : ''}
-${params.data.properties.datetime ? `<p>时间: ${params.data.properties.datetime}</p>` : ''}
-${params.data.properties.location ? `<p>地点: ${params.data.properties.location}</p>` : ''}
+${params.data.properties.datetime ? `<p class="line3">时间: ${params.data.properties.datetime}</p>` : ''}
+${params.data.properties.location ? `<p class="line3">地点: ${params.data.properties.location}</p>` : ''}
+${params.data.properties.birthdate || params.data.properties.deathdate ? `<p>出生/逝世: ${params.data.properties.birthdate ? params.data.properties.birthdate : ' '}-${params.data.properties.deathdate ? params.data.properties.deathdate : ' '}</p>` : ''}
+${params.data.properties.pname ? `<p>原名: ${params.data.properties.pname}</p>` : ''}
+${params.data.properties.othername ? `<p>别名: ${params.data.properties.othername}</p>` : ''}
+${params.data.properties.birthplace ? `<p>籍贯: ${params.data.properties.birthplace}</p>` : ''}
+${params.data.properties.achievement ? `<p style="max-width:500px;white-space: pre-wrap;display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5; overflow: hidden">成就: ${params.data.properties.achievement}</p>` : ''}
 ${params.data.properties.summary ? `<p style="max-width:500px;white-space: pre-wrap;display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 10; overflow: hidden">简述: ${params.data.properties.summary}</p>` : ''}
 `;
                 default:

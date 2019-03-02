@@ -3,5 +3,16 @@ html, body, #app {
 }
 
 #mountNode {
-  background: #F2F2F2;height:100%;width:100%
+  background: #F2F2F2;
+  height: 100%;
+  width: 100%;
+}
+
+.line3 {
+  max-width: 500px;
+  white-space: pre-wrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden
 }
