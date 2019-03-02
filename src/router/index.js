@@ -4,7 +4,7 @@ import Visitor from 'group/visitor'
 import Admin from 'group/admin'
 import MainPage from 'pages/visitor/mainpage/mainpage'
 import All from 'pages/visitor/all/all'
-import PeopleEvent from 'pages/visitor/people-event/people-event'
+import PersonEvent from 'pages/visitor/person-event/person-event'
 
 Vue.use(Router)
 
@@ -25,8 +25,8 @@ export default new Router({
           component: All
         },
         {
-          path: '/people-event',
-          component: PeopleEvent
+          path: '/person-event',
+          component: PersonEvent
         }
       ]
     },
