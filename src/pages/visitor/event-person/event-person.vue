@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div id="mountNode"></div>
-    <Input placeholder="在此输入人物名称..." v-model="searchValue" class="search">
+    <Input placeholder="在此输入事件/会议名称..." v-model="searchValue" class="search">
     <Button slot="append" icon="ios-search" @click="handleSearch"></Button>
     </Input>
   </div>
@@ -11,7 +11,7 @@
   import {forceLayer} from 'assets/js/drawing'
 
   export default {
-    name: "person-event",
+    name: "event-person",
     data: () => ({
       searchValue: ""
     }),
@@ -23,11 +23,11 @@
     methods: {
       handleSearch() {
         forceLayer({
-          url: apiRoot + '/person-event',
+          url: apiRoot + '/event-person',
           params: {
             name: this.searchValue
           }
-        }, '人物事件关系', '#mountNode');
+        }, '事件人物关系', '#mountNode');
       }
     }
   }
