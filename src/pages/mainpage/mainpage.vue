@@ -4,6 +4,7 @@
       <Button to="/all">知识图谱总览</Button>
       <Button to="/person-event">人物事件关系</Button>
       <Button to="/event-person">事件人物关系</Button>
+      <Button to="/wiki">百科</Button>
     </Card>
   </div>
 </template>

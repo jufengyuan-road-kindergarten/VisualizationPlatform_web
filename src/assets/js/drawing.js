@@ -1,17 +1,16 @@
 import axios from 'axios'
-
-function forceLayer(axiosParams,title, mountNode) {
+let map_type_name = {
+  "Event": "事件",
+  "Meeting": "会议",
+  "Person": "人物",
+  "Movement": "运动"
+};
+function forceLayer(axiosParams, title, mountNode) {
   let dom = document.querySelector(mountNode);
   let myChart = echarts.init(dom);
   let app = {};
   let option = null;
   app.title = '力引导布局';
-  let map_type_name = {
-    "PARTICIPATE": "参与",
-    "Event": "事件",
-    "Meeting": "会议",
-    "Person": "人物",
-  };
   let map_type_category = {};
   let map_nodeId_index = {};
   let map_edgeId_index = {};
@@ -48,7 +47,7 @@ function forceLayer(axiosParams,title, mountNode) {
     graph.edges.forEach((edge, index) => {
       map_edgeId_index[edge.id] = index;
       // edge.symbolSize = edge.properties.priority;
-      edge.value = edge.properties.priority;
+      edge.value = edge.properties.priority || 5;
       edge.itemStyle = null;
       // edge.label = {show: true, formatter: "{c}"}
     });
@@ -65,17 +64,17 @@ function forceLayer(axiosParams,title, mountNode) {
           switch (params.dataType) {
             case 'edge':
               return `
-<p style="text-align:center;font-weight:bold;">${graph.nodes[map_nodeId_index[params.data.source]].name} <span style="color:#f990ff;font-style: italic;font-size:0.95em">-${map_type_name[params.data.type]}-></span> ${graph.nodes[map_nodeId_index[params.data.target]].name}</p>
+<p style="text-align:center;font-weight:bold;">${graph.nodes[map_nodeId_index[params.data.source]].name} <span style="color:#f990ff;font-style: italic;font-size:0.95em">-${params.data.properties.type}-></span> ${graph.nodes[map_nodeId_index[params.data.target]].name}</p>
 <p>关系权重: ${params.data.value}</p>`;
             case 'node':
               return `
 <p style="text-align:center;font-weight:bold;">${params.data.name}</p>
 <p>类型: ${map_type_name[params.data.type]}</p>
-${params.data.properties.duration ? `<p>字/号: ${params.data.properties.duration}</p>` : ''}
+${params.data.properties.wordming ? `<p>字/号: ${params.data.properties.wordming}</p>` : ''}
 ${params.data.properties.duration ? `<p>时期: ${params.data.properties.duration}</p>` : ''}
 ${params.data.properties.datetime ? `<p class="line3">时间: ${params.data.properties.datetime}</p>` : ''}
 ${params.data.properties.location ? `<p class="line3">地点: ${params.data.properties.location}</p>` : ''}
-${params.data.properties.birthdate || params.data.properties.deathdate ? `<p>出生/逝世: ${params.data.properties.birthdate ? params.data.properties.birthdate : ' '}-${params.data.properties.deathdate ? params.data.properties.deathdate : ' '}</p>` : ''}
+${params.data.properties.birthdate || params.data.properties.deathdate ? `<p>生卒: ${params.data.properties.birthdate ? params.data.properties.birthdate : ' '}-${params.data.properties.deathdate ? params.data.properties.deathdate : ' '}</p>` : ''}
 ${params.data.properties.pname ? `<p>原名: ${params.data.properties.pname}</p>` : ''}
 ${params.data.properties.othername ? `<p>别名: ${params.data.properties.othername}</p>` : ''}
 ${params.data.properties.birthplace ? `<p>籍贯: ${params.data.properties.birthplace}</p>` : ''}
@@ -109,7 +108,7 @@ ${params.data.properties.summary ? `<p style="max-width:500px;white-space: pre-w
           edgeLabel: {
             show: true,
             formatter(params) {
-              return map_type_name[params.data.type];
+              return params.data.properties.type;
             }
           },
           force: {
@@ -143,4 +142,4 @@ ${params.data.properties.summary ? `<p style="max-width:500px;white-space: pre-w
   });
 }
 
-export {forceLayer};
+export {forceLayer,map_type_name};

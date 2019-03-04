@@ -4,6 +4,7 @@ import MainPage from 'pages/mainpage/mainpage'
 import All from 'pages/all/all'
 import PersonEvent from 'pages/person-event/person-event'
 import EventPerson from 'pages/event-person/event-person'
+import Wiki from 'pages/wiki/wiki'
 
 Vue.use(Router)
 
@@ -26,6 +27,10 @@ export default new Router({
     {
       path: '/event-person',
       component: EventPerson
+    },
+    {
+      path: '/wiki',
+      component: Wiki
     }
   ]
 })
