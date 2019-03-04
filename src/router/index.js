@@ -1,11 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Visitor from 'group/visitor'
-import Admin from 'group/admin'
-import MainPage from 'pages/visitor/mainpage/mainpage'
-import All from 'pages/visitor/all/all'
-import PersonEvent from 'pages/visitor/person-event/person-event'
-import EventPerson from 'pages/visitor/event-person/event-person'
+import MainPage from 'pages/mainpage/mainpage'
+import All from 'pages/all/all'
+import PersonEvent from 'pages/person-event/person-event'
+import EventPerson from 'pages/event-person/event-person'
 
 Vue.use(Router)
 
@@ -14,31 +12,20 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: Visitor,
-      children: [
-        {
-          path: '',
-          name: "mainpage",
-          component: MainPage
-        },
-        {
-          path: '/all',
-          component: All
-        },
-        {
-          path: '/person-event',
-          component: PersonEvent
-        },
-        {
-          path: '/event-person',
-          component: EventPerson
-        }
-      ]
+      name: "mainpage",
+      component: MainPage
     },
     {
-      path: '/admin',
-      component: Admin,
-      children: []
+      path: '/all',
+      component: All
+    },
+    {
+      path: '/person-event',
+      component: PersonEvent
+    },
+    {
+      path: '/event-person',
+      component: EventPerson
     }
   ]
 })
