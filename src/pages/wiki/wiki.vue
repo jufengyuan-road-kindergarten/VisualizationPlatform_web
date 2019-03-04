@@ -8,14 +8,25 @@
           placeholder="请输入人物名称"
           icon="ios-search"
           size="large"
-          @on-select="handleSearch"
+          @on-search="handleSearch"
           :maxShow=5
         >
         </AutoComplete>
       </div>
     </div>
     <div style="overflow: hidden;" v-if="$route.query.wd&&node">
-
+      <div class="search2">
+        <AutoComplete
+          :data="autoCompleteData"
+          :filter-method="filterMethod"
+          placeholder="请输入人物名称"
+          icon="ios-search"
+          size="large"
+          @on-search="handleSearch"
+          :maxShow=5
+        >
+        </AutoComplete>
+      </div>
       <Row type="flex" justify="center" align="top" class="content" :gutter=50>
         <Col span="8">
           <Card :bordered="false" title="人物信息" class="guide" dis-hover shadow>
@@ -71,29 +82,35 @@
       },
       cnt:0
     }),
-    mounted() {
-      if(!this.$route.query.wd){
-        this.loadAutoCompleteData();
-      }else{
-        this.loadNodeData();
+    async mounted() {
+      let promises=[];
+      promises.push(this.loadAutoCompleteData());
+      if(this.$route.query.wd){
+        promises.push(this.loadNodeData());
       }
+      this.$Spin.show();
+      await Promise.all(promises);
+      this.$Spin.hide();
     },
     watch:{
-      '$route.query.wd'(){
+      async '$route.query.wd'(){
+        this.$Spin.show();
         if(!this.$route.query.wd){
-          this.loadAutoCompleteData();
+          await this.loadAutoCompleteData();
         }else{
-          this.loadNodeData();
+          await this.loadNodeData();
         }
+        this.$Spin.hide();
       }
     },
     methods: {
-      handleClickPage(val){
-        this.loadNodeData(val);
+      async handleClickPage(val){
+        this.$Spin.show();
+        await this.loadNodeData(val);
+        this.$Spin.hide();
       },
       loadNodeData(page=0){
-        this.$Spin.show();
-        this.$axios({
+        return this.$axios({
           url:apiRoot+'/person-relation',
           params:{
             person:this.$route.query.wd,
@@ -106,13 +123,10 @@
           this.cnt=res.data.data.count;
         }).catch(()=>{
 
-        }).finally(()=>{
-          this.$Spin.hide();
         })
       },
       loadAutoCompleteData(){
-        this.$Spin.show();
-        this.$axios({
+        return this.$axios({
           url: apiRoot + '/allName',
           params: {
             type: ['Person']
@@ -124,16 +138,16 @@
           console.log(this.autoCompleteData)
         }).catch(()=>{
 
-        }).finally(()=>{
-          this.$Spin.hide();
         })
       },
       handleSearch(value) {
-        this.$router.push({
-          path: '/wiki', query: {
-            wd: value
-          }
-        })
+        if(this.autoCompleteData.indexOf(value)!==-1){
+          this.$router.push({
+            path: '/wiki', query: {
+              wd: value
+            }
+          })
+        }
       },
       filterMethod(value, option) {
         return option.indexOf(value) !== -1;
@@ -177,5 +191,11 @@
   .page{
     margin-top:10px;
     text-align: center;
+  }
+  .search2{
+    width: 80vw;
+    max-width: 800px;
+    text-align: center;
+    margin:20px auto auto;
   }
 </style>

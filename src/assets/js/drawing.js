@@ -1,3 +1,4 @@
+import router from 'router'
 import axios from 'axios'
 let map_type_name = {
   "Event": "事件",
@@ -128,6 +129,12 @@ ${params.data.properties.summary ? `<p style="max-width:500px;white-space: pre-w
 
     myChart.setOption(option);
     myChart.on('click', {dataType: 'node'}, function (params) {
+      if(params.data.type==="Person"){
+        router.push({path:'/wiki',query:{
+          wd:params.data.name
+          }});
+        return
+      }
       window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(params.name));
     });
     // myChart.on('mouseover', {dataType: 'node'}, function (params) {
