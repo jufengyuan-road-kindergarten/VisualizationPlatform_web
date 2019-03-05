@@ -36,13 +36,13 @@
             <p v-if="node.properties.duration">时期: {{node.properties.duration}}</p>
             <p v-if="node.properties.datetime">时间: {{node.properties.datetime}}</p>
             <p v-if="node.properties.location">地点: {{node.properties.location}}</p>
-            <p v-if="node.properties.birthdate || node.properties.deathdate">
-              生卒: {{node.properties.birthdate || " "}}-{{node.properties.deathdate || ' '}}</p>
+            <p
+              v-if="node.properties.birthdate || node.properties.deathdate"
+            >生卒: {{node.properties.birthdate || " "}}-{{node.properties.deathdate || ' '}}</p>
             <p v-if="node.properties.pname">原名: {{node.properties.pname}}</p>
             <p v-if="node.properties.othername">别名: {{node.properties.othername}}</p>
             <p v-if="node.properties.birthplace">籍贯: {{node.properties.birthplace}}</p>
-            <p v-if="node.properties.achievement" style="white-space: pre-wrap">成就:
-              {{node.properties.achievement}}</p>
+            <p v-if="node.properties.achievement" style="white-space: pre-wrap">成就: {{node.properties.achievement}}</p>
             <p v-if="node.properties.summary" style="white-space: pre-wrap;">简述: {{node.properties.summary}}</p>
           </Card>
         </Col>
