@@ -1,11 +1,13 @@
 import router from 'router'
 import axios from 'axios'
+
 let map_type_name = {
   "Event": "事件",
   "Meeting": "会议",
   "Person": "人物",
   "Movement": "运动"
 };
+
 function forceLayer(axiosParams, title, mountNode) {
   let dom = document.querySelector(mountNode);
   let myChart = echarts.init(dom);
@@ -18,8 +20,6 @@ function forceLayer(axiosParams, title, mountNode) {
 
   myChart.showLoading();
   axios(axiosParams).then((data) => {
-    myChart.hideLoading();
-
     let graph = data.data.data;
     console.log(graph);
     let categories = [];
@@ -129,13 +129,20 @@ ${params.data.properties.summary ? `<p style="max-width:500px;white-space: pre-w
 
     myChart.setOption(option);
     myChart.on('click', {dataType: 'node'}, function (params) {
-      if(params.data.type==="Person"){
-        router.push({path:'/wiki',query:{
-          wd:params.data.name
-          }});
-        return
+      switch (params.data.type) {
+        case "Person":
+        case "Event":
+        case "Meeting":
+          router.push({
+            path: '/wiki', query: {
+              wd: params.data.name
+            }
+          });
+          break;
+        default:
+          window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(params.name));
+          break;
       }
-      window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(params.name));
     });
     // myChart.on('mouseover', {dataType: 'node'}, function (params) {
     //   console.log("!!", params)
@@ -146,7 +153,88 @@ ${params.data.properties.summary ? `<p style="max-width:500px;white-space: pre-w
     if (option && typeof option === "object") {
       myChart.setOption(option, true);
     }
+  }).finally(() => {
+    myChart.hideLoading();
   });
 }
 
-export {forceLayer,map_type_name};
+function tree(axiosParams, mountNode) {
+  let dom = document.querySelector(mountNode);
+  let myChart = echarts.init(dom);
+  let app = {};
+  let option = null;
+  app.title = '力引导布局';
+  let map_type_category = {};
+  let map_nodeId_index = {};
+  let map_edgeId_index = {};
+
+  myChart.showLoading();
+  let data = null;
+  return axios(axiosParams).then((res) => {
+    data = res.data.data;
+    let graph = data.tree;
+
+    function dfs(node) {
+      if (node.edge) {
+        node.name = `[${node.edge}]${node.name}`;
+      }
+      if (!node.children.length) {
+        return;
+      }
+      for (let x of node.children) {
+        dfs(x)
+      }
+    }
+
+    dfs(graph);
+    option = {
+      tooltip: {
+        trigger: 'item',
+        triggerOn: 'mousemove'
+      },
+      series: [
+        {
+          type: 'tree',
+          roam: true,
+          data: [graph],
+          top: '1%',
+          left: '20%',
+          bottom: '1%',
+          right: '50%',
+
+          symbolSize: 7,
+
+          label: {
+            normal: {
+              position: 'left',
+              verticalAlign: 'middle',
+              align: 'right',
+              fontSize: 9
+            }
+          },
+
+          leaves: {
+            label: {
+              normal: {
+                position: 'right',
+                verticalAlign: 'middle',
+                align: 'left'
+              }
+            }
+          },
+
+          expandAndCollapse: true,
+          animationDuration: 550,
+          animationDurationUpdate: 750
+        }
+      ]
+    };
+
+    myChart.setOption(option);
+    return data;
+  }).finally(() => {
+    myChart.hideLoading();
+  });
+}
+
+export {forceLayer, tree, map_type_name};
