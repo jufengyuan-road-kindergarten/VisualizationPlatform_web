@@ -91,14 +91,14 @@
       nodeData: [],
       node: null,
       relations: null,
+      eventTree: null,
       map_type_name,
       map_type_color: {
         "Event": '#2F4554',
         "Meeting": "#61A0A8",
         "Person": "#C23531"
       },
-      cnt: 0,
-      eventTree: null
+      cnt: 0
     }),
     async mounted() {
       this.$Spin.show();
@@ -110,6 +110,7 @@
     },
     watch: {
       async '$route.query.wd'() {
+        this.reset();
         this.$Spin.show();
         if (!this.$route.query.wd) {
           await this.loadAutoCompleteData();
@@ -120,6 +121,11 @@
       }
     },
     methods: {
+      reset() {
+        this.node = null;
+        this.relations = null;
+        this.eventTree = null;
+      },
       async handleClickPage(val) {
         this.$Spin.show();
         await this.loadNodeData(val);
