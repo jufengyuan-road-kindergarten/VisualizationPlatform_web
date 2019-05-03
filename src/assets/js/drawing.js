@@ -5,7 +5,8 @@ let map_type_name = {
   "Event": "事件",
   "Meeting": "会议",
   "Person": "人物",
-  "Movement": "运动"
+  "Movement": "运动",
+  "Organization": "组织"
 };
 
 function forceLayer(axiosParams, title, mountNode) {

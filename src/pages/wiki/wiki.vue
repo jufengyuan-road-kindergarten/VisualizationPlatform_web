@@ -5,7 +5,7 @@
         <AutoComplete
           :data="autoCompleteData"
           :filter-method="filterMethod"
-          placeholder="请输入人物、事件、会议名称"
+          placeholder="请输入人物、事件、会议、组织名称"
           icon="ios-search"
           size="large"
           @on-search="handleSearch"
@@ -19,7 +19,7 @@
         <AutoComplete
           :data="autoCompleteData"
           :filter-method="filterMethod"
-          placeholder="请输入人物、事件、会议名称"
+          placeholder="请输入人物、事件、会议、组织名称"
           icon="ios-search"
           size="large"
           @on-search="handleSearch"
@@ -28,7 +28,7 @@
         </AutoComplete>
       </div>
       <Row type="flex" justify="center" align="top" class="content" :gutter=50>
-        <Col :span="eventTree?20:8" v-if="node">
+        <Col :span="node.type==='Event'||node.type==='Organization'?20:8" v-if="node">
           <Card :bordered="false" :title="`${map_type_name[node.type]}信息`" class="guide" dis-hover shadow>
             <h2 style="text-align: center;">{{node.name}}</h2>
             <p>类型: {{map_type_name[node.type]}}</p>
@@ -96,7 +96,8 @@
       map_type_color: {
         "Event": '#2F4554',
         "Meeting": "#61A0A8",
-        "Person": "#C23531"
+        "Person": "#C23531",
+        "Organization": "#FF9565"
       },
       cnt: 0
     }),
@@ -162,7 +163,20 @@
             }, '#mountNode').then((res) => {
               this.eventTree = res.tree;
               this.node = res.node;
-            })
+            });
+            break;
+          case "Organization":
+            axios = this.$axios({
+              url: apiRoot + '/info',
+              params: {
+                name: this.$route.query.wd,
+                types: ["Organization"],
+              }
+            }).then((res) => {
+              this.node = res.data.data.node;
+            }).catch(() => {
+
+            });
         }
         return axios
       },
@@ -170,7 +184,7 @@
         return this.$axios({
           url: apiRoot + '/allName',
           params: {
-            type: ['Person', 'Event', 'Meeting']
+            type: ['Person', 'Event', 'Meeting', 'Organization']
           }
         }).then((res) => {
           this.nodeData = res.data.data;
@@ -219,6 +233,7 @@
 
   .content {
     padding: 20px 0;
+
     p {
       padding-top: 0.5em;
       line-height: 1.65em;
@@ -230,6 +245,7 @@
     background: rgba(0, 0, 0, .05);
     border: 1px solid rgba(0, 0, 0, .08);
     box-shadow: rgba(0, 0, 0, .15) 0 3px 10px;
+
     &:not(:first-child) {
       margin-top: 5px;
     }
