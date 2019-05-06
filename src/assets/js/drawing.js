@@ -130,20 +130,11 @@ ${params.data.properties.summary ? `<p style="max-width:500px;white-space: pre-w
 
     myChart.setOption(option);
     myChart.on('click', {dataType: 'node'}, function (params) {
-      switch (params.data.type) {
-        case "Person":
-        case "Event":
-        case "Meeting":
-          router.push({
-            path: '/wiki', query: {
-              wd: params.data.name
-            }
-          });
-          break;
-        default:
-          window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(params.name));
-          break;
-      }
+      router.push({
+        path: '/wiki', query: {
+          wd: params.data.name
+        }
+      });
     });
     // myChart.on('mouseover', {dataType: 'node'}, function (params) {
     //   console.log("!!", params)
