@@ -10,7 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-runtime": "^6.26.0",
     "iview": "^3.1.5",
     "normalize.css": "^8.0.0",
